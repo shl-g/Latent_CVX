@@ -308,9 +308,9 @@ def training_report(tb_writer, iteration, Ll1, loss, l1_loss, elapsed, testing_i
 if __name__ == "__main__":
     # Set up command line argument parser
     parser = ArgumentParser(description="Training script parameters")
-    parser.add_argument("--feature_lr", type=float, default=0.025, help="Learning of the features")
-    parser.add_argument("--feature_ratio", type=float, default=1, help="Ratio between the DC and rest features")
-    parser.add_argument("--lr_convex_points_init", type=float, default=0.0005, help="Initial Position LR value")
+    parser.add_argument("--feature_lr", type=float, default=0.0075, help="Learning of the features")
+    parser.add_argument("--feature_ratio", type=float, default=20, help="Ratio between the DC and rest features")
+    parser.add_argument("--lr_convex_points_init", type=float, default=0.005, help="Initial Position LR value")
     op = OptimizationParams(parser)
     lp = ModelParams(parser)
     pp = PipelineParams(parser)
@@ -326,8 +326,8 @@ if __name__ == "__main__":
     parser.add_argument("--outdoor", action="store_true", default=False)
 
     parser.add_argument("--prompt", type=str, help="Text prompt for training")
-    parser.add_argument("--num_points", type=int, default=25_000, help="PCD number of points")
-    parser.add_argument("--num_cams", type=int, default=12, help="Number of Cameras")
+    parser.add_argument("--num_points", type=int, default=2400, help="PCD number of points")
+    parser.add_argument("--num_cams", type=int, default=128, help="Number of Cameras")
     parser.add_argument("--prune_factor", type=int, default=1, help="Prune factor")
 
 
