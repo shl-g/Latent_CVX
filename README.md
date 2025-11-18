@@ -7,3 +7,5 @@ python train.py -s input_scene/general -m 'desired_output_path' --prompt 'desire
 video creation command:
 
 python create_video.py -m 'output_path'
+
+A lot of redundency in the requirements.txt and various other scripts inside the directories. will fix in the future.
