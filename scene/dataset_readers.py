@@ -398,7 +398,7 @@ def storePly(path, xyz, rgb):
 
 def readOpen3DSceneInfo(path, images, eval, llffhold=8, num_points=25_000, num_cameras=128):
     image_size = (512, 512)
-    generated_cameras = generate_cameras_around_point([0, 0, 0], num_cameras, 7, image_size, 70) #rad was 3. Now 5 for train, 7 for test.
+    generated_cameras = generate_cameras_around_point([0, 0, 0], num_cameras, 5, image_size, 70) #rad was 3. Now 5 for train, 7 for test.
     cam_intrinsics = {}
     cam_extrinsics = {}
     cam_directions = {}
@@ -584,4 +584,5 @@ sceneLoadTypeCallbacks = {
     "Open3D": readOpen3DSceneInfo,
     "Colmap": readColmapSceneInfo,
     "Blender": readNerfSyntheticInfo
+
 }
