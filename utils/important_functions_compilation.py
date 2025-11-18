@@ -584,7 +584,22 @@ class StableDiffusion(nn.Module):
         
     def train_step(self, text_embeddings, inputs, guidance_scale=100):
 
-        # interp to 512x512 to be fed into vae.
+        # linear transform to latent space
+        C2L_Matrix = np.array([
+                                [ 1.69810224, -0.02986101, -0.05746497],
+                                [-0.28270747,  4.91430525, -3.04784101],
+                                [-2.55163474,  2.23158593,  0.0448761 ],
+                                [-0.78083445,  3.02981481, -3.22913725]
+                                ])
+        C2L = torch.tensor(C2L_Matrix, dtype=torch.float32, device=inputs.device)
+        inputs_transformed = torch.einsum("oc, cxy -> oxy", C2L, inputs)
+        inputs_down = F.interpolate(
+            inputs_transformed.unsqueeze(0),  # (1,4,512,512)
+            size=(64, 64),
+            mode='bilinear',
+            align_corners=False
+        ).squeeze(0)  # (4,64,64)
+        latents = inputs_down.unsqueeze(0)
 
         """# _t = time.time()
         #print("latent mode = ", self.latent_mode)
@@ -598,9 +613,9 @@ class StableDiffusion(nn.Module):
             #latents = self.encode_imgs(inputs)
             latents = inputs"""
             
-        if inputs.dim() == 3:
-            inputs = inputs.unsqueeze(0)    
-        latents = self.encode_imgs(inputs)
+        # if inputs.dim() == 3:
+        #     inputs = inputs.unsqueeze(0)    
+        # latents = self.encode_imgs(inputs)
         
         # torch.cuda.synchronize(); print(f'[TIME] guiding: interp {time        .time() - _t:.4f}s')
 
@@ -691,3 +706,4 @@ def RGB_to_latent(image):
     latent = latent_flat.view(1, 4, H, W)  # [1, 4, H, W]
 
     return latent
+
